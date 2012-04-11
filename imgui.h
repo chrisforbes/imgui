@@ -1,0 +1,39 @@
+#pragma once
+
+#include <SDL/SDL.h>
+
+#define __noreturn __attribute__(( noreturn ))
+
+/* from util.c */
+extern void __noreturn die(int code, char const * p, ...);
+
+/* core ui structures */
+typedef int ui_id;
+
+#define LAYOUT_VBOX	1
+#define LAYOUT_HBOX	2
+
+struct layout {
+	struct layout * prev;	/* parent layout */
+	int x, y, w, h;		/* bounds of this layout */
+	int ux, uy;		/* offset into the layout */
+	int flags;		/* layout style flags */
+};
+
+struct state {
+	int x, y, buttons;	/* current input device state */
+	ui_id hot, lasthot, active;	/* widget interaction state */
+	struct layout * l;	/* current layout object */
+	struct layout * sl;	/* spare layouts */
+};
+
+extern struct state uis;
+
+/* from layout.c */
+void ui_pushlayout(void);
+void ui_poplayout(void);
+void ui_toplevel(int x, int y);
+void ui_float(int x, int y);
+void ui_hbox(int h);
+void ui_vbox(int w);
+void ui_do_layout(struct layout * l, int dx, int dy, SDL_Rect * r);
