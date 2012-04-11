@@ -13,9 +13,9 @@ int ui_inside(SDL_Rect * r) {
 }
 
 /* draw a button */
-int ui_button(ui_id id, char const * label) {
+int ui_button_ex(ui_id id, char const * label, enum layout_mode mode) {
 	SDL_Rect r;
-	ui_do_layout( uis.l, BUTTON_WIDTH, BUTTON_HEIGHT, &r );
+	ui_do_layout( uis.l, mode, BUTTON_WIDTH, BUTTON_HEIGHT, &r );
 	if (ui_inside(&r))
 		uis.hot = id;
 
@@ -40,6 +40,10 @@ int ui_button(ui_id id, char const * label) {
 	SDL_FillRect( surf, &r, c_normal );
 
 	return 0;
+}
+
+int ui_button(ui_id id, char const * label) {
+	return ui_button_ex( id, label, uis.l->mode );
 }
 
 /* fill the background of the current layout */

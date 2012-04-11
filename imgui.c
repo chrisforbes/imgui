@@ -17,6 +17,8 @@
  * 	- keyboard handling
  * 	- text rendering
  * 	- separation of ui behavior from drawing code (not everything wants to be sdl)
+ * 	- hbox/vbox model isnt really good enough. we need to be able to allocate chunks out
+ * 		of any side of a layout.
  */
 
 #include "imgui.h"
@@ -35,13 +37,13 @@ void draw(void) {
 	ui_begin();
 
 	ui_toplevel(windowWidth, windowHeight);
-	ui_float(300,300, LAYOUT_VBOX);
+	ui_float(300,300, LM_TOP);
 	ui_fill(0xff444444);	/* window border */
 	ui_pad(3,0);		/* 3px border */
 	ui_fill(0xff777777);	/* window fill */
 
 	ui_pad(6,3);
-	ui_hbox(BUTTON_HEIGHT);
+	ui_box(0, BUTTON_HEIGHT, LM_LEFT);
 	ui_pad(0,3);	
 	if (ui_button(1, "Toggle Red Channel"))
 		c_background ^= 0x00ff0000;
@@ -52,11 +54,14 @@ void draw(void) {
 	ui_poplayout();
 
 	/* a second row */
-	ui_hbox(BUTTON_HEIGHT);
+	ui_box_ex(0, BUTTON_HEIGHT, LM_LEFT, LM_BOTTOM);
 	ui_pad(0,3);
 	if (ui_button(3, "Toggle Blue Channel"))
 		c_background ^= 0x000000ff;
 	ui_poplayout();
+
+	/* show what is left */
+	ui_fill(0xffff0000);
 
 	ui_poplayout();
 	ui_poplayout();

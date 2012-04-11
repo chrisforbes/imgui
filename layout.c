@@ -2,17 +2,39 @@
 #include <stdlib.h>
 
 /* carve out some space from a layout */
-void ui_do_layout(struct layout * l, int dx, int dy, SDL_Rect * r) {
-	r->x = l->x + l->ux;
-	r->y = l->y + l->uy;
-	r->w = (l->flags & LAYOUT_VBOX) ? l->w : dx;
-	r->h = (l->flags & LAYOUT_HBOX) ? l->h : dy;
-
-	if (l->flags & LAYOUT_VBOX) l->uy += dy + l->ipad;
-	if (l->flags & LAYOUT_HBOX) l->ux += dx + l->ipad;
-
-	/* todo: what happens if the element doesn't actually fit?
-	 * in some cases, it's sensible to spill into another row/column */
+void ui_do_layout(struct layout * l, enum layout_mode mode, int dx, int dy, SDL_Rect * r) {
+	switch(mode) {
+		case LM_LEFT:
+			r->x = l->x;	r->y = l->y;
+			r->w = dx;	r->h = l->h;
+			l->x += dx + l->ipad;
+			l->w -= dx + l->ipad;
+			return;
+		case LM_RIGHT:
+			r->x = l->x + l->w - dx;	r->y = l->y;
+			r->w = dx;	r->h = l->h;
+			l->w -= dx + l->ipad;
+			return;
+		case LM_TOP:
+			r->x = l->x;	r->y = l->y;
+			r->w = l->w;	r->h = dy;
+			l->y += dy + l->ipad;
+			l->h -= dy + l->ipad;
+			return;
+		case LM_BOTTOM:
+			r->x = l->x;	r->y = l->y + l->h - dy;
+			r->w = l->w;	r->h = dy;
+			l->h -= dx + l->ipad;
+			return;
+		case LM_FILL:
+			r->x = l->x;	r->y = l->y;
+			r->w = l->w;	r->h = l->h;
+			/* ? no change to the layout itself? */
+			/* fill should be the last thing added always */
+			return;
+		default:
+			die( 1, "invalid layout mode %d", mode );
+	}
 }
 
 void ui_pushlayout(void) {
@@ -41,47 +63,40 @@ void ui_poplayout(void) {
 /* toplevel layout */
 void ui_toplevel(int w, int h) {
 	ui_pushlayout();
-	uis.l->ux = 0;
-	uis.l->uy = 0;
 	uis.l->x = 0;
 	uis.l->y = 0;
 	uis.l->w = w;
 	uis.l->h = h;
 	uis.l->ipad = 0;
-	uis.l->flags = 0;
+	uis.l->mode = 0;
 }
 
 /* a centered floating panel */
-void ui_float(int w, int h, int flags) {
+void ui_float(int w, int h, enum layout_mode mode) {
 	ui_pushlayout();
-	uis.l->ux = 0;
-	uis.l->uy = 0;
 	uis.l->w = w;
 	uis.l->h = h;
 	uis.l->x = uis.l->prev->x + (uis.l->prev->w - w)/2;
 	uis.l->y = uis.l->prev->y + (uis.l->prev->h - h)/2;
 	uis.l->ipad = 0;
-	uis.l->flags = flags;
+	uis.l->mode = mode;
 }
 
-void ui_box_helper(int w, int h, int flags) {
+void ui_box_ex(int w, int h, enum layout_mode mode, enum layout_mode placement) {
 	SDL_Rect r;
-	ui_do_layout( uis.l, w, h, &r );
+	ui_do_layout( uis.l, placement, w, h, &r );
 	ui_pushlayout();
-	uis.l->ux = 0;
-	uis.l->uy = 0;
 	uis.l->x = r.x;
 	uis.l->y = r.y;
 	uis.l->w = r.w;
 	uis.l->h = r.h;
-	uis.l->flags = flags;
+	uis.l->mode = mode;
 	uis.l->ipad = 0;
 }
 
-/* stacks elements horizontally */
-void ui_hbox(int h) { ui_box_helper( 0, h, LAYOUT_HBOX ); }
-/* stacks elements vertically */
-void ui_vbox(int w) { ui_box_helper( w, 0, LAYOUT_VBOX ); }
+void ui_box(int w, int h, enum layout_mode mode) {
+	ui_box_ex( w, h, mode, uis.l->mode );
+}
 
 void ui_pad(int xpad, int ipad) {
 	uis.l->x += xpad;
