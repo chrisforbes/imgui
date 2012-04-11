@@ -16,18 +16,6 @@ static int windowHeight = 480;
 SDL_Surface * surf;
 static int c_background = 0xff0000ff;
 
-void ui_begin(void) {
-	uis.hot = 0;
-}
-
-void ui_end(void) {
-	uis.lasthot = uis.hot;
-
-	/* it is an error to leave layouts pushed */
-	if (uis.l)
-		die(1, "ui_end called with unfinished layouts");
-}
-
 /* local ui state */
 
 void draw(void) {

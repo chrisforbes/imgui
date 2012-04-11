@@ -47,3 +47,18 @@ int ui_fill(int c) {
 	SDL_Rect r = { uis.l->x, uis.l->y, uis.l->w, uis.l->h };
 	SDL_FillRect( surf, &r, c );
 }
+
+/* begin building the ui */
+void ui_begin(void) {
+	uis.hot = 0;
+}
+
+/* end building the ui */
+void ui_end(void) {
+	uis.lasthot = uis.hot;
+
+	/* it is an error to leave layouts pushed */
+	if (uis.l)
+		die(1, "ui_end called with unfinished layouts");
+}
+

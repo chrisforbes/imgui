@@ -47,6 +47,8 @@ void ui_pad(int xpad, int ipad);
 int ui_inside(SDL_Rect * r);
 int ui_button(ui_id id, char const * label);
 int ui_fill(int c);
+void ui_begin(void);
+void ui_end(void);
 
 #define BUTTON_WIDTH 64
 #define BUTTON_HEIGHT 48
