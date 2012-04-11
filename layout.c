@@ -48,10 +48,11 @@ void ui_toplevel(int w, int h) {
 	uis.l->w = w;
 	uis.l->h = h;
 	uis.l->ipad = 0;
+	uis.l->flags = 0;
 }
 
 /* a centered floating panel */
-void ui_float(int w, int h) {
+void ui_float(int w, int h, int flags) {
 	ui_pushlayout();
 	uis.l->ux = 0;
 	uis.l->uy = 0;
@@ -60,6 +61,7 @@ void ui_float(int w, int h) {
 	uis.l->x = uis.l->prev->x + (uis.l->prev->w - w)/2;
 	uis.l->y = uis.l->prev->y + (uis.l->prev->h - h)/2;
 	uis.l->ipad = 0;
+	uis.l->flags = flags;
 }
 
 void ui_box_helper(int w, int h, int flags) {

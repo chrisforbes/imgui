@@ -12,6 +12,7 @@ typedef int ui_id;
 
 #define LAYOUT_VBOX	1
 #define LAYOUT_HBOX	2
+#define LAYOUT_FILL	(LAYOUT_VBOX | LAYOUT_HBOX)
 
 struct layout {
 	struct layout * prev;	/* parent layout */
@@ -36,7 +37,7 @@ extern SDL_Surface * surf;
 void ui_pushlayout(void);
 void ui_poplayout(void);
 void ui_toplevel(int x, int y);
-void ui_float(int x, int y);
+void ui_float(int x, int y, int flags);
 void ui_hbox(int h);
 void ui_vbox(int w);
 void ui_do_layout(struct layout * l, int dx, int dy, SDL_Rect * r);

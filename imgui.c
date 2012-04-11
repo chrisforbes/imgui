@@ -35,18 +35,25 @@ void draw(void) {
 	ui_begin();
 
 	ui_toplevel(windowWidth, windowHeight);
-	ui_float(300,300);
+	ui_float(300,300, LAYOUT_VBOX);
 	ui_fill(0xff444444);	/* window background */
 
+	ui_pad(6,6);
 	ui_hbox(BUTTON_HEIGHT);
-	ui_pad(5,5);
-	
+	ui_pad(0,3);	
 	if (ui_button(1, "Toggle Red Channel"))
 		c_background ^= 0x00ff0000;
 
 	if (ui_button(2, "Toggle Green Channel"))
 		c_background ^= 0x0000ff00;
 
+	ui_poplayout();
+
+	/* a second row */
+	ui_hbox(BUTTON_HEIGHT);
+	ui_pad(0,3);
+	if (ui_button(3, "Toggle Blue Channel"))
+		c_background ^= 0x000000ff;
 	ui_poplayout();
 
 	ui_poplayout();
