@@ -24,9 +24,11 @@ void draw(void) {
 
 	ui_toplevel(windowWidth, windowHeight);
 	ui_float(300,300, LAYOUT_VBOX);
-	ui_fill(0xff444444);	/* window background */
+	ui_fill(0xff444444);	/* window border */
+	ui_pad(3,0);		/* 3px border */
+	ui_fill(0xff777777);	/* window fill */
 
-	ui_pad(6,6);
+	ui_pad(6,3);
 	ui_hbox(BUTTON_HEIGHT);
 	ui_pad(0,3);	
 	if (ui_button(1, "Toggle Red Channel"))
