@@ -12,7 +12,7 @@ CFLAGSX	:= $(shell pkg-config --cflags $(LIBS))
 LDFLAGSX := $(shell pkg-config --libs $(LIBS))
 
 .SUFFIXES:
-.PHONY: clean
+.PHONY: clean all
 
 $(TARGET): $(COBJ) Makefile
 	@echo LINK $@ '<-' $(COBJ)
@@ -20,6 +20,8 @@ $(TARGET): $(COBJ) Makefile
 
 clean:
 	-rm $(TARGET) *.o *.d
+
+all: $(TARGET)
 
 %.d: %.c Makefile
 	@echo DEP $@ '<-' $<
