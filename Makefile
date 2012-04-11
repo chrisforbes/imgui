@@ -14,19 +14,19 @@ LDFLAGSX := $(shell pkg-config --libs $(LIBS))
 .SUFFIXES:
 .PHONY: clean
 
-$(TARGET): $(COBJ)
+$(TARGET): $(COBJ) Makefile
 	@echo LINK $@ '<-' $(COBJ)
 	@$(CC) -o $@ $(COBJ) $(LDFLAGS) $(LDFLAGSX)
 
 clean:
 	-rm $(TARGET) *.o *.d
 
-%.d: %.c
-	@echo DEP $<
-	@$(CC) -fsyntax-only -MM -MF $@ $^ $(CFLAGS) $(CFLAGSX)
+%.d: %.c Makefile
+	@echo DEP $@ '<-' $<
+	@$(CC) -fsyntax-only -MM -MF $@ $< $(CFLAGS) $(CFLAGSX)
 
 -include $(CDEP)
 
-%.o: %.c
-	@echo CC $^
+%.o: %.c Makefile
+	@echo CC $@ '<-' $<
 	@$(CC) -c -o $@ $< $(CFLAGS) $(CFLAGSX)
