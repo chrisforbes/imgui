@@ -65,7 +65,7 @@ int ui_fill(int c) {
 	SDL_FillRect( surf, &r, c );
 }
 
-void ui_begin() {
+void ui_begin(void) {
 	uis.hot = 0;
 }
 
@@ -81,7 +81,7 @@ void ui_end(void) {
 
 void draw(void) {
 	SDL_FillRect(surf, 0, c_background);
-	ui_begin(windowWidth, windowHeight);
+	ui_begin();
 
 	ui_toplevel(windowWidth, windowHeight);
 	ui_float(300,300);
