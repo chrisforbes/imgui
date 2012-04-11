@@ -4,7 +4,19 @@
  *	- very simple widgets
  *	- no 'widget tree' state retained in ui lib, that's the app's problem
  *	- automated layout and metrics as much as possible
- *		(although multipass layout requires app cooperation)
+ *		(although multipass layout requires app cooperation
+ *
+ * things that are kindof tricky
+ * 	- different handling for each mouse button / complex interactions
+ * 	- keyboard vs mouse focus
+ * 	- tooltip routing
+ * 	- unique id generation
+ * 	- ...
+ *
+ * big todos
+ * 	- keyboard handling
+ * 	- text rendering
+ * 	- separation of ui behavior from drawing code (not everything wants to be sdl)
  */
 
 #include "imgui.h"
