@@ -18,6 +18,7 @@ struct layout {
 	int x, y, w, h;		/* bounds of this layout */
 	int ux, uy;		/* offset into the layout */
 	int flags;		/* layout style flags */
+	int ipad;		/* internal padding between elements */
 };
 
 struct state {
@@ -37,3 +38,4 @@ void ui_float(int x, int y);
 void ui_hbox(int h);
 void ui_vbox(int w);
 void ui_do_layout(struct layout * l, int dx, int dy, SDL_Rect * r);
+void ui_pad(int xpad, int ipad);

@@ -8,8 +8,8 @@ void ui_do_layout(struct layout * l, int dx, int dy, SDL_Rect * r) {
 	r->w = (l->flags & LAYOUT_VBOX) ? l->w : dx;
 	r->h = (l->flags & LAYOUT_HBOX) ? l->h : dy;
 
-	if (l->flags & LAYOUT_VBOX) l->uy += dy;
-	if (l->flags & LAYOUT_HBOX) l->ux += dx;
+	if (l->flags & LAYOUT_VBOX) l->uy += dy + l->ipad;
+	if (l->flags & LAYOUT_HBOX) l->ux += dx + l->ipad;
 
 	/* todo: what happens if the element doesn't actually fit?
 	 * in some cases, it's sensible to spill into another row/column */
@@ -47,6 +47,7 @@ void ui_toplevel(int w, int h) {
 	uis.l->y = 0;
 	uis.l->w = w;
 	uis.l->h = h;
+	uis.l->ipad = 0;
 }
 
 /* a centered floating panel */
@@ -58,6 +59,7 @@ void ui_float(int w, int h) {
 	uis.l->h = h;
 	uis.l->x = uis.l->prev->x + (uis.l->prev->w - w)/2;
 	uis.l->y = uis.l->prev->y + (uis.l->prev->h - h)/2;
+	uis.l->ipad = 0;
 }
 
 void ui_box_helper(int w, int h, int flags) {
@@ -71,6 +73,7 @@ void ui_box_helper(int w, int h, int flags) {
 	uis.l->w = r.w;
 	uis.l->h = r.h;
 	uis.l->flags = flags;
+	uis.l->ipad = 0;
 }
 
 /* stacks elements horizontally */
@@ -78,3 +81,10 @@ void ui_hbox(int h) { ui_box_helper( 0, h, LAYOUT_HBOX ); }
 /* stacks elements vertically */
 void ui_vbox(int w) { ui_box_helper( w, 0, LAYOUT_VBOX ); }
 
+void ui_pad(int xpad, int ipad) {
+	uis.l->x += xpad;
+	uis.l->y += xpad;
+	uis.l->w -= 2 * xpad;
+	uis.l->h -= 2 * xpad;
+	uis.l->ipad = ipad;
+}

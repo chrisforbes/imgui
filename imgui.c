@@ -88,6 +88,7 @@ void draw(void) {
 	ui_fill(0xff444444);	/* window background */
 
 	ui_hbox(button_height);
+	ui_pad(5,5);
 	
 	if (ui_button(1, "Toggle Red Channel"))
 		c_background ^= 0x00ff0000;
@@ -96,6 +97,7 @@ void draw(void) {
 		c_background ^= 0x0000ff00;
 
 	ui_poplayout();
+
 	ui_poplayout();
 	ui_poplayout();
 
