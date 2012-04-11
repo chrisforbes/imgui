@@ -28,7 +28,9 @@ struct state {
 	struct layout * sl;	/* spare layouts */
 };
 
+/* things provided by the client */
 extern struct state uis;
+extern SDL_Surface * surf;
 
 /* from layout.c */
 void ui_pushlayout(void);
@@ -39,3 +41,11 @@ void ui_hbox(int h);
 void ui_vbox(int w);
 void ui_do_layout(struct layout * l, int dx, int dy, SDL_Rect * r);
 void ui_pad(int xpad, int ipad);
+
+/* from widget.c */
+int ui_inside(SDL_Rect * r);
+int ui_button(ui_id id, char const * label);
+int ui_fill(int c);
+
+#define BUTTON_WIDTH 64
+#define BUTTON_HEIGHT 48
