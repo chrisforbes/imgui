@@ -21,7 +21,7 @@ int ui_button(ui_id id, char const * label) {
 
 	if (uis.active == id && !uis.buttons) {
 		uis.active = 0;
-		return 1;
+		return uis.hot == id;
 	}
 
 	if (uis.lasthot == id) {
