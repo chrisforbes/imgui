@@ -5,8 +5,8 @@ LIBS	:= sdl
 CFLAGS	:= -g -O2 -W -Werror --std=gnu99
 LDFLAGS := 
 
-COBJ	:= $(CSRC:.c=.c.o)
-CDEP	:= $(CSRC:.c=.c.d)
+COBJ	:= $(CSRC:.c=.o)
+CDEP	:= $(CSRC:.c=.d)
 
 CFLAGSX	:= $(shell pkg-config --cflags $(LIBS))
 LDFLAGSX := $(shell pkg-config --libs $(LIBS))
@@ -19,14 +19,14 @@ $(TARGET): $(COBJ)
 	@$(CC) -o $@ $(COBJ) $(LDFLAGS) $(LDFLAGSX)
 
 clean:
-	-rm $(TARGET) *.c.o *.c.d
+	-rm $(TARGET) *.o *.d
 
-%.c.d: %.c
+%.d: %.c
 	@echo DEP $<
 	@$(CC) -fsyntax-only -MM -MF $@ $^ $(CFLAGS) $(CFLAGSX)
 
 -include $(CDEP)
 
-%.c.o: %.c
+%.o: %.c
 	@echo CC $^
-	@$(CC) -c -o $@ $^ $(CFLAGS) $(CFLAGSX)
+	@$(CC) -c -o $@ $< $(CFLAGS) $(CFLAGSX)
