@@ -32,6 +32,7 @@ int ui_button_ex(ui_id id, char const * label, enum layout_mode mode) {
 	if (uis.lasthot == id) {
 		if (uis.buttons) {
 			SDL_FillRect( surf, &r, c_pushed );
+			r.x += 1; r.y += 1;
 			draw_button_label( &r, label );
 			uis.active = id;
 			return 0;
