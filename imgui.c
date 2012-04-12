@@ -24,6 +24,7 @@
 #include "imgui.h"
 
 struct state uis = { 0 };
+struct font * font;
 
 static int windowWidth = 640;
 static int windowHeight = 480;
@@ -45,19 +46,26 @@ void draw(void) {
 	ui_pad(6,3);
 	ui_box(0, BUTTON_HEIGHT, LM_LEFT);
 	ui_pad(0,3);	
-	if (ui_button(1, "Toggle Red Channel"))
+	if (ui_button(1, "Red"))
 		c_background ^= 0x00ff0000;
 
-	if (ui_button(2, "Toggle Green Channel"))
+	if (ui_button(2, "Green"))
 		c_background ^= 0x0000ff00;
+
+	if (ui_button(3, "Blue"))
+		c_background ^= 0x000000ff;
 
 	ui_poplayout();
 
 	/* a second row */
 	ui_box_ex(0, BUTTON_HEIGHT, LM_LEFT, LM_BOTTOM);
 	ui_pad(0,3);
-	if (ui_button(3, "Toggle Blue Channel"))
-		c_background ^= 0x000000ff;
+	if (ui_button_ex(4, "Exit", LM_RIGHT)) {
+		SDL_Event e;
+		e.type = SDL_QUIT;
+		SDL_PushEvent(&e);
+	}
+
 	ui_poplayout();
 
 	/* show what is left */
@@ -65,6 +73,8 @@ void draw(void) {
 
 	ui_poplayout();
 	ui_poplayout();
+
+	font_draw( font, 20, 20, "Hello World \\ff00;in green \\!and back and \\ff0000;in red \\!and back", -1 );
 
 	ui_end();
 }
@@ -75,6 +85,8 @@ int main(void) {
 	surf = SDL_SetVideoMode( windowWidth, windowHeight, 0, SDL_DOUBLEBUF | SDL_SWSURFACE );
 	SDL_WM_SetCaption("IMGUI Test", "IMGUI Test");
 	atexit(SDL_Quit);
+
+	font = font_load( "data/FreeSans.ttf", 12 );
 
 	for(;;) {
 		SDL_Event e;

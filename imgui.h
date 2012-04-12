@@ -52,3 +52,12 @@ void ui_end(void);
 
 #define BUTTON_WIDTH 64
 #define BUTTON_HEIGHT 48
+
+/* from font.c */
+
+struct font;
+struct font * font_load( char const * name, int size );
+int font_draw( struct font * f, int x, int y, char const * p, int c );
+int font_measure( struct font * f, char const *p );
+
+extern struct font * font;

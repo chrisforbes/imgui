@@ -12,6 +12,11 @@ int ui_inside(SDL_Rect * r) {
 		uis.y >= r->y && uis.y < r->y + r->h;
 }
 
+static void draw_button_label( SDL_Rect * r, char const * label ) {
+	int w = font_measure( font, label );
+	font_draw( font, r->x + r->w/2 - w/2, r->y + r->h/2 + 3, label, 0 );
+}
+
 /* draw a button */
 int ui_button_ex(ui_id id, char const * label, enum layout_mode mode) {
 	SDL_Rect r;
@@ -27,17 +32,19 @@ int ui_button_ex(ui_id id, char const * label, enum layout_mode mode) {
 	if (uis.lasthot == id) {
 		if (uis.buttons) {
 			SDL_FillRect( surf, &r, c_pushed );
+			draw_button_label( &r, label );
 			uis.active = id;
 			return 0;
 		}
 		else {
-			SDL_FillRect( surf, &r,
-				uis.hot == id ? c_hilite : c_normal );
+			SDL_FillRect( surf, &r, uis.hot == id ? c_hilite : c_normal );
+			draw_button_label( &r, label );
 			return 0;
 		}
 	}
 
 	SDL_FillRect( surf, &r, c_normal );
+	draw_button_label( &r, label );
 
 	return 0;
 }

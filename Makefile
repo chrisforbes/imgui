@@ -1,7 +1,7 @@
 CC	:= gcc
 TARGET	:= imgui
 CSRC	:= $(shell find -iname '*.c')
-LIBS	:= sdl
+LIBS	:= sdl freetype2
 CFLAGS	:= -g -O2 -W -Werror --std=gnu99
 LDFLAGS := 
 
