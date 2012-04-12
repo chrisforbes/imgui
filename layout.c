@@ -24,7 +24,7 @@ void ui_do_layout(struct layout * l, enum layout_mode mode, int dx, int dy, SDL_
 		case LM_BOTTOM:
 			r->x = l->x;	r->y = l->y + l->h - dy;
 			r->w = l->w;	r->h = dy;
-			l->h -= dx + l->ipad;
+			l->h -= dy + l->ipad;
 			return;
 		case LM_FILL:
 			r->x = l->x;	r->y = l->y;
