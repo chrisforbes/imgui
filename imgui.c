@@ -34,10 +34,10 @@ static int c_background = 0xff0000ff;
 /* local ui state */
 
 void draw(void) {
-	SDL_FillRect(surf, 0, c_background);
 	ui_begin();
 
 	ui_toplevel(windowWidth, windowHeight);
+	ui_fill(c_background);
 	ui_float(300,300, LM_TOP);
 	ui_fill(0xff444444);	/* window border */
 	ui_pad(3,0);		/* 3px border */
